@@ -1,5 +1,7 @@
 #!/usr/local/bin/ruby
 
+# RTsingle - ReTweet a single account to your twitter feed.  Uses oldschool RT @user.
+
 require 'twitter'
 require 'credentials' # put your API keys in here
 
