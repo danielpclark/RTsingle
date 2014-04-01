@@ -1,7 +1,7 @@
 #!/usr/local/bin/ruby
 
 # RTsingle - ReTweet a single account to your twitter feed.  Uses oldschool RT @user.
-
+$:.unshift "."
 
 require 'twitter'
 require 'credentials' # put your API keys in here
@@ -16,10 +16,18 @@ end
 to_retweet = client.user_timeline(RT_ACCOUNT)
 to_self = client.user_timeline(OWNER)
 
-def charlimiter(text_in) # 140 Char max!
-	if text_in.length > 140
-		return (text_in[0..136] + '...')
-	end
+def charlimiter(text_in)
+  if text_in.length > 140
+    if !!text_in[" http://"] # lets not damage the links in the retweets!
+      str_spl = text_in.split(" http://")
+      str_spl[0] = str_spl[0][0..str_spl[0].length-text_in.length+135] + "..."
+      return str_spl.join(" http://")
+    else
+      return (text_in[0..136] + '...')
+    end
+  else
+    return text_in[0..139]
+  end
 end
 
 my_tweets = Array.new
